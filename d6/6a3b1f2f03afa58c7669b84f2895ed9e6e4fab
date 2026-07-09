@@ -1,0 +1,19 @@
+src/todos/todos.service.ts
+  s_3676ccfc0382d1::t_e2b0ce29363e0a 53
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "d66a3b1f2f03afa58c7669b84f2895ed9e6e4fab",
+  "prompts": {},
+  "sessions": {
+    "s_3676ccfc0382d1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "bfb363b5-bfcf-4b7e-8139-6ca32a267501",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "mayank kansal <mayank.kansal@talentica.com>"
+    }
+  }
+}
