@@ -8,33 +8,37 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
-import { Todo } from './todo.entity';
-import { TodosService } from './todos.service';
+import { FindTodosQueryDto } from './dto/find-todos-query.dto';
+import { TodosService, TodoResponse } from './todos.service';
 
 @Controller('todos')
 export class TodosController {
   constructor(private readonly todosService: TodosService) {}
 
   @Post()
-  create(@Body() createTodoDto: CreateTodoDto): Todo {
+  create(@Body() createTodoDto: CreateTodoDto): TodoResponse {
     return this.todosService.create(createTodoDto);
   }
 
   @Get()
-  findAll(): Todo[] {
-    return this.todosService.findAll();
+  findAll(@Query() query: FindTodosQueryDto): TodoResponse[] {
+    return this.todosService.findAll(query);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Todo {
+  findOne(@Param('id') id: string): TodoResponse {
     return this.todosService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTodoDto: UpdateTodoDto): Todo {
+  update(
+    @Param('id') id: string,
+    @Body() updateTodoDto: UpdateTodoDto,
+  ): TodoResponse {
     return this.todosService.update(id, updateTodoDto);
   }
 
