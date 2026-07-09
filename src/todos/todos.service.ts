@@ -15,6 +15,9 @@ export class TodosService {
       description: createTodoDto.description,
       completed: createTodoDto.completed ?? false,
       createdAt: new Date(),
+      dueDate: createTodoDto.dueDate
+        ? new Date(createTodoDto.dueDate)
+        : undefined,
     };
     this.todos.push(todo);
     return todo;
@@ -34,7 +37,11 @@ export class TodosService {
 
   update(id: string, updateTodoDto: UpdateTodoDto): Todo {
     const todo = this.findOne(id);
-    Object.assign(todo, updateTodoDto);
+    const { dueDate, ...rest } = updateTodoDto;
+    Object.assign(todo, rest);
+    if (dueDate !== undefined) {
+      todo.dueDate = new Date(dueDate);
+    }
     return todo;
   }
 

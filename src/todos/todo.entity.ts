@@ -4,4 +4,5 @@ export class Todo {
   description?: string;
   completed: boolean;
   createdAt: Date;
+  dueDate?: Date;
 }

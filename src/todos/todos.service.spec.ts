@@ -61,4 +61,25 @@ describe('TodosService', () => {
   it('should throw when removing a missing todo', () => {
     expect(() => service.remove('missing-id')).toThrow(NotFoundException);
   });
+
+  it('should create a todo with a dueDate', () => {
+    const todo = service.create({
+      title: 'Pay rent',
+      dueDate: '2026-08-01T00:00:00.000Z',
+    });
+    expect(todo.dueDate).toEqual(new Date('2026-08-01T00:00:00.000Z'));
+  });
+
+  it('should create a todo without a dueDate', () => {
+    const todo = service.create({ title: 'No due date' });
+    expect(todo.dueDate).toBeUndefined();
+  });
+
+  it('should update a todo dueDate', () => {
+    const created = service.create({ title: 'Reschedule me' });
+    const updated = service.update(created.id, {
+      dueDate: '2026-09-01T00:00:00.000Z',
+    });
+    expect(updated.dueDate).toEqual(new Date('2026-09-01T00:00:00.000Z'));
+  });
 });
