@@ -1,0 +1,19 @@
+.prettierrc
+  s_b02a2a62907ac1::t_d70961bfe1bfa1 1-4
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "fa1936c5a7cae830522339497ccb6e212d288816",
+  "prompts": {},
+  "sessions": {
+    "s_b02a2a62907ac1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "84867989-df7a-4cca-829a-42a14036accd",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "mayank kansal <mayank.kansal@talentica.com>"
+    }
+  }
+}
