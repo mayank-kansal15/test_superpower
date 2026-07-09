@@ -1,0 +1,59 @@
+README.md
+  s_b02a2a62907ac1::t_d6f318b00d70de 1-98
+eslint.config.mjs
+  s_b02a2a62907ac1::t_9294a17bffd4de 1-35
+nest-cli.json
+  s_b02a2a62907ac1::t_d4df7b327eb50f 1-8
+package-lock.json
+  s_b02a2a62907ac1::t_9e4d977550b721 1-10237
+package.json
+  s_b02a2a62907ac1::t_437cb85c571c70 1-74
+src/app.controller.spec.ts
+  s_b02a2a62907ac1::t_4884cb3241a9eb 1-22
+src/app.controller.ts
+  s_b02a2a62907ac1::t_9ccd4afd1af6a6 1-12
+src/app.service.ts
+  s_b02a2a62907ac1::t_a82bc97082add1 1-8
+test/app.e2e-spec.ts
+  s_b02a2a62907ac1::t_cefc5c9679f495 1-29
+test/jest-e2e.json
+  s_b02a2a62907ac1::t_e99e56977f0ea9 1-9
+tsconfig.build.json
+  s_b02a2a62907ac1::t_66124e6dfc862b 1-4
+tsconfig.json
+  s_b02a2a62907ac1::t_b215ce5cd4c7a2 1-25
+src/app.module.ts
+  s_b02a2a62907ac1::t_8368cfeacbc51e 1-11
+src/main.ts
+  s_b02a2a62907ac1::t_5392edca34b4fc 1-12
+src/todos/dto/create-todo.dto.ts
+  s_b02a2a62907ac1::t_441ba17854f747 1-15
+src/todos/dto/update-todo.dto.ts
+  s_b02a2a62907ac1::t_072a42045c5802 1-4
+src/todos/todo.entity.ts
+  s_b02a2a62907ac1::t_56552281330883 1-7
+src/todos/todos.controller.ts
+  s_b02a2a62907ac1::t_8458766c2c2169 1-46
+src/todos/todos.module.ts
+  s_b02a2a62907ac1::t_3809b8408f4682 1-9
+src/todos/todos.service.spec.ts
+  s_b02a2a62907ac1::t_156d49b227743c 1-64
+src/todos/todos.service.ts
+  s_b02a2a62907ac1::t_a185316d3a0e22 1-48
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "c5179bd13098c665256c21e5369f1d8905eac705",
+  "prompts": {},
+  "sessions": {
+    "s_b02a2a62907ac1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "84867989-df7a-4cca-829a-42a14036accd",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "mayank kansal <mayank.kansal@talentica.com>"
+    }
+  }
+}
