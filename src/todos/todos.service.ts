@@ -4,11 +4,13 @@ import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 import { Todo } from './todo.entity';
 
+export type TodoResponse = Todo & { isOverdue: boolean };
+
 @Injectable()
 export class TodosService {
   private readonly todos: Todo[] = [];
 
-  create(createTodoDto: CreateTodoDto): Todo {
+  create(createTodoDto: CreateTodoDto): TodoResponse {
     const todo: Todo = {
       id: randomUUID(),
       title: createTodoDto.title,
@@ -20,29 +22,25 @@ export class TodosService {
         : undefined,
     };
     this.todos.push(todo);
-    return todo;
+    return this.toResponse(todo);
   }
 
-  findAll(): Todo[] {
-    return this.todos;
+  findAll(): TodoResponse[] {
+    return this.todos.map((todo) => this.toResponse(todo));
   }
 
-  findOne(id: string): Todo {
-    const todo = this.todos.find((t) => t.id === id);
-    if (!todo) {
-      throw new NotFoundException(`Todo with id ${id} not found`);
-    }
-    return todo;
+  findOne(id: string): TodoResponse {
+    return this.toResponse(this.findTodoOrThrow(id));
   }
 
-  update(id: string, updateTodoDto: UpdateTodoDto): Todo {
-    const todo = this.findOne(id);
+  update(id: string, updateTodoDto: UpdateTodoDto): TodoResponse {
+    const todo = this.findTodoOrThrow(id);
     const { dueDate, ...rest } = updateTodoDto;
     Object.assign(todo, rest);
     if (dueDate !== undefined) {
       todo.dueDate = new Date(dueDate);
     }
-    return todo;
+    return this.toResponse(todo);
   }
 
   remove(id: string): void {
@@ -51,5 +49,25 @@ export class TodosService {
       throw new NotFoundException(`Todo with id ${id} not found`);
     }
     this.todos.splice(index, 1);
+  }
+
+  private findTodoOrThrow(id: string): Todo {
+    const todo = this.todos.find((t) => t.id === id);
+    if (!todo) {
+      throw new NotFoundException(`Todo with id ${id} not found`);
+    }
+    return todo;
+  }
+
+  private toResponse(todo: Todo): TodoResponse {
+    return { ...todo, isOverdue: this.isOverdue(todo) };
+  }
+
+  private isOverdue(todo: Todo): boolean {
+    return (
+      todo.dueDate !== undefined &&
+      todo.dueDate.getTime() < Date.now() &&
+      !todo.completed
+    );
   }
 }

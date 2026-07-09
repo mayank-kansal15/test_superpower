@@ -82,4 +82,43 @@ describe('TodosService', () => {
     });
     expect(updated.dueDate).toEqual(new Date('2026-09-01T00:00:00.000Z'));
   });
+
+  it('should mark a todo overdue when dueDate is in the past and not completed', () => {
+    const todo = service.create({
+      title: 'Overdue task',
+      dueDate: '2000-01-01T00:00:00.000Z',
+    });
+    expect(todo.isOverdue).toBe(true);
+  });
+
+  it('should not mark a completed todo as overdue', () => {
+    const todo = service.create({
+      title: 'Completed but past due',
+      dueDate: '2000-01-01T00:00:00.000Z',
+      completed: true,
+    });
+    expect(todo.isOverdue).toBe(false);
+  });
+
+  it('should not mark a todo without a dueDate as overdue', () => {
+    const todo = service.create({ title: 'No due date' });
+    expect(todo.isOverdue).toBe(false);
+  });
+
+  it('should not mark a future dueDate as overdue', () => {
+    const todo = service.create({
+      title: 'Future task',
+      dueDate: '2999-01-01T00:00:00.000Z',
+    });
+    expect(todo.isOverdue).toBe(false);
+  });
+
+  it('should include isOverdue on findAll and findOne results', () => {
+    const created = service.create({
+      title: 'Check propagation',
+      dueDate: '2000-01-01T00:00:00.000Z',
+    });
+    expect(service.findAll()[0].isOverdue).toBe(true);
+    expect(service.findOne(created.id).isOverdue).toBe(true);
+  });
 });
