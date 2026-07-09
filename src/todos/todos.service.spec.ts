@@ -121,4 +121,78 @@ describe('TodosService', () => {
     expect(service.findAll()[0].isOverdue).toBe(true);
     expect(service.findOne(created.id).isOverdue).toBe(true);
   });
+
+  describe('findAll with query', () => {
+    it('should sort by dueDate ascending', () => {
+      service.create({ title: 'B', dueDate: '2026-06-01T00:00:00.000Z' });
+      service.create({ title: 'A', dueDate: '2026-01-01T00:00:00.000Z' });
+      const result = service.findAll({ sortBy: 'dueDate', order: 'asc' });
+      expect(result.map((t) => t.title)).toEqual(['A', 'B']);
+    });
+
+    it('should sort by dueDate descending', () => {
+      service.create({ title: 'B', dueDate: '2026-06-01T00:00:00.000Z' });
+      service.create({ title: 'A', dueDate: '2026-01-01T00:00:00.000Z' });
+      const result = service.findAll({ sortBy: 'dueDate', order: 'desc' });
+      expect(result.map((t) => t.title)).toEqual(['B', 'A']);
+    });
+
+    it('should sort todos without a dueDate to the end regardless of order', () => {
+      service.create({ title: 'No date' });
+      service.create({ title: 'Dated', dueDate: '2026-01-01T00:00:00.000Z' });
+      const asc = service.findAll({ sortBy: 'dueDate', order: 'asc' });
+      const desc = service.findAll({ sortBy: 'dueDate', order: 'desc' });
+      expect(asc.map((t) => t.title)).toEqual(['Dated', 'No date']);
+      expect(desc.map((t) => t.title)).toEqual(['Dated', 'No date']);
+    });
+
+    it('should filter by overdue=true', () => {
+      service.create({
+        title: 'Overdue',
+        dueDate: '2000-01-01T00:00:00.000Z',
+      });
+      service.create({
+        title: 'Not overdue',
+        dueDate: '2999-01-01T00:00:00.000Z',
+      });
+      const result = service.findAll({ overdue: 'true' });
+      expect(result.map((t) => t.title)).toEqual(['Overdue']);
+    });
+
+    it('should filter by dueAfter', () => {
+      service.create({ title: 'Early', dueDate: '2026-01-01T00:00:00.000Z' });
+      service.create({ title: 'Late', dueDate: '2026-06-01T00:00:00.000Z' });
+      const result = service.findAll({ dueAfter: '2026-03-01T00:00:00.000Z' });
+      expect(result.map((t) => t.title)).toEqual(['Late']);
+    });
+
+    it('should filter by dueBefore', () => {
+      service.create({ title: 'Early', dueDate: '2026-01-01T00:00:00.000Z' });
+      service.create({ title: 'Late', dueDate: '2026-06-01T00:00:00.000Z' });
+      const result = service.findAll({
+        dueBefore: '2026-03-01T00:00:00.000Z',
+      });
+      expect(result.map((t) => t.title)).toEqual(['Early']);
+    });
+
+    it('should combine dueAfter and dueBefore into a range', () => {
+      service.create({
+        title: 'Too early',
+        dueDate: '2026-01-01T00:00:00.000Z',
+      });
+      service.create({
+        title: 'In range',
+        dueDate: '2026-03-15T00:00:00.000Z',
+      });
+      service.create({
+        title: 'Too late',
+        dueDate: '2026-06-01T00:00:00.000Z',
+      });
+      const result = service.findAll({
+        dueAfter: '2026-03-01T00:00:00.000Z',
+        dueBefore: '2026-04-01T00:00:00.000Z',
+      });
+      expect(result.map((t) => t.title)).toEqual(['In range']);
+    });
+  });
 });
