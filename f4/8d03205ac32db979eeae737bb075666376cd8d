@@ -1,0 +1,19 @@
+docs/superpowers/specs/2026-07-10-todo-priority-design.md
+  s_31ea7028521f46::t_ec4b750aba2afd 1-141
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "f48d03205ac32db979eeae737bb075666376cd8d",
+  "prompts": {},
+  "sessions": {
+    "s_31ea7028521f46": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "72471b35-5c88-4cdd-b1d0-bd9f6c94aa6d",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "mayank kansal <mayank.kansal@talentica.com>"
+    }
+  }
+}
