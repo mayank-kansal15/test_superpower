@@ -1,0 +1,19 @@
+src/todos/todos.service.ts
+  s_1ffcfef2cc10af::t_27288702d951b4 53
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "47983efa095b9771729930dcd8c2a6163d09ce5c",
+  "prompts": {},
+  "sessions": {
+    "s_1ffcfef2cc10af": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "a208693c-8716-4a35-b8b6-278151f23711",
+        "model": "gpt-5.3-codex"
+      },
+      "human_author": "mayank kansal <mayank.kansal@talentica.com>"
+    }
+  }
+}
