@@ -80,4 +80,11 @@ describe('TodosController (e2e)', () => {
       .send({ title: 'Bad date', dueDate: 'not-a-date' })
       .expect(400);
   });
+
+  it('rejects an invalid priority', () => {
+    return request(app.getHttpServer())
+      .post('/todos')
+      .send({ title: 'Bad priority', priority: 'urgent' })
+      .expect(400);
+  });
 });

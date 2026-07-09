@@ -5,4 +5,5 @@ export class Todo {
   completed: boolean;
   createdAt: Date;
   dueDate?: Date;
+  priority: 'low' | 'medium' | 'high';
 }

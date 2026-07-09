@@ -75,6 +75,22 @@ describe('TodosService', () => {
     expect(todo.dueDate).toBeUndefined();
   });
 
+  it('should default priority to medium when not specified', () => {
+    const todo = service.create({ title: 'No priority given' });
+    expect(todo.priority).toBe('medium');
+  });
+
+  it('should create a todo with an explicit priority', () => {
+    const todo = service.create({ title: 'Urgent', priority: 'high' });
+    expect(todo.priority).toBe('high');
+  });
+
+  it('should update a todo priority', () => {
+    const created = service.create({ title: 'Reprioritize me' });
+    const updated = service.update(created.id, { priority: 'low' });
+    expect(updated.priority).toBe('low');
+  });
+
   it('should update a todo dueDate', () => {
     const created = service.create({ title: 'Reschedule me' });
     const updated = service.update(created.id, {

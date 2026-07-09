@@ -1,6 +1,7 @@
 import {
   IsBoolean,
   IsDateString,
+  IsIn,
   IsNotEmpty,
   IsOptional,
   IsString,
@@ -22,4 +23,8 @@ export class CreateTodoDto {
   @IsDateString()
   @IsOptional()
   dueDate?: string;
+
+  @IsIn(['low', 'medium', 'high'])
+  @IsOptional()
+  priority?: 'low' | 'medium' | 'high';
 }

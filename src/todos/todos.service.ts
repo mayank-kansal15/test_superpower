@@ -21,6 +21,7 @@ export class TodosService {
       dueDate: createTodoDto.dueDate
         ? new Date(createTodoDto.dueDate)
         : undefined,
+      priority: createTodoDto.priority ?? 'medium',
     };
     this.todos.push(todo);
     return this.toResponse(todo);
