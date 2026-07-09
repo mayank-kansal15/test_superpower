@@ -1,0 +1,19 @@
+docs/superpowers/specs/2026-07-10-todo-due-dates-design.md
+  s_f935050a1510e8::t_e4c01d59e1d544 1-129
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "ff43195e69e6d0ecee0fa05d6d79a2290b80d514",
+  "prompts": {},
+  "sessions": {
+    "s_f935050a1510e8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e9b95426-f5f0-40c5-adb9-4fbe15da8973",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "mayank kansal <mayank.kansal@talentica.com>"
+    }
+  }
+}
