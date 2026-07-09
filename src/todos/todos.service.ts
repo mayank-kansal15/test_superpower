@@ -50,7 +50,7 @@ export class TodosService {
     }
 
     if (query.sortBy === 'dueDate') {
-      const direction = query.order === 'asc' ? -1 : 1;
+      const direction = query.order === 'asc' ? 1 : -1;
       result = [...result].sort((a, b) => {
         if (a.dueDate === undefined && b.dueDate === undefined) return 0;
         if (a.dueDate === undefined) return 1;
