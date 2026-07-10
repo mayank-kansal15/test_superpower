@@ -50,6 +50,11 @@ export class TodosService {
       );
     }
 
+    if (query.priority) {
+      const priorities = new Set(query.priority.split(','));
+      result = result.filter((todo) => priorities.has(todo.priority));
+    }
+
     if (query.sortBy === 'dueDate') {
       const direction = query.order === 'asc' ? 1 : -1;
       result = [...result].sort((a, b) => {

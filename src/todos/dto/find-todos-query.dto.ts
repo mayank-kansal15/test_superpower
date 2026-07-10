@@ -3,6 +3,7 @@ import {
   IsDateString,
   IsIn,
   IsOptional,
+  Matches,
 } from 'class-validator';
 
 export class FindTodosQueryDto {
@@ -25,4 +26,8 @@ export class FindTodosQueryDto {
   @IsDateString()
   @IsOptional()
   dueAfter?: string;
+
+  @Matches(/^(low|medium|high)(,(low|medium|high))*$/)
+  @IsOptional()
+  priority?: string;
 }

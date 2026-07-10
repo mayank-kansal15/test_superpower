@@ -210,5 +210,20 @@ describe('TodosService', () => {
       });
       expect(result.map((t) => t.title)).toEqual(['In range']);
     });
+
+    it('should filter by a single priority value', () => {
+      service.create({ title: 'Urgent', priority: 'high' });
+      service.create({ title: 'Chill', priority: 'low' });
+      const result = service.findAll({ priority: 'high' });
+      expect(result.map((t) => t.title)).toEqual(['Urgent']);
+    });
+
+    it('should filter by multiple comma-separated priority values', () => {
+      service.create({ title: 'Urgent', priority: 'high' });
+      service.create({ title: 'Normal', priority: 'medium' });
+      service.create({ title: 'Chill', priority: 'low' });
+      const result = service.findAll({ priority: 'high,medium' });
+      expect(result.map((t) => t.title)).toEqual(['Urgent', 'Normal']);
+    });
   });
 });
