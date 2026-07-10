@@ -1,0 +1,19 @@
+test/todos.e2e-spec.ts
+  s_31ea7028521f46::t_5fb763cf60aec0 77-101
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "8f570933880d5a3c8301eaaa9a56c30e57b37a64",
+  "prompts": {},
+  "sessions": {
+    "s_31ea7028521f46": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "72471b35-5c88-4cdd-b1d0-bd9f6c94aa6d",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "mayank kansal <mayank.kansal@talentica.com>"
+    }
+  }
+}
