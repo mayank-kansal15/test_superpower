@@ -74,6 +74,31 @@ describe('TodosController (e2e)', () => {
     ]);
   });
 
+  it('filters and sorts todos by priority', async () => {
+    await request(app.getHttpServer())
+      .post('/todos')
+      .send({ title: 'Low one', priority: 'low' })
+      .expect(201);
+    await request(app.getHttpServer())
+      .post('/todos')
+      .send({ title: 'High one', priority: 'high' })
+      .expect(201);
+    await request(app.getHttpServer())
+      .post('/todos')
+      .send({ title: 'Medium one', priority: 'medium' })
+      .expect(201);
+
+    const response = await request(app.getHttpServer())
+      .get('/todos')
+      .query({ priority: 'high,medium', sortBy: 'priority', order: 'asc' })
+      .expect(200);
+
+    expect(response.body.map((t: { title: string }) => t.title)).toEqual([
+      'High one',
+      'Medium one',
+    ]);
+  });
+
   it('rejects an invalid dueDate', () => {
     return request(app.getHttpServer())
       .post('/todos')
