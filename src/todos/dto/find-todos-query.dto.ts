@@ -7,9 +7,9 @@ import {
 } from 'class-validator';
 
 export class FindTodosQueryDto {
-  @IsIn(['dueDate'])
+  @IsIn(['dueDate', 'priority'])
   @IsOptional()
-  sortBy?: 'dueDate';
+  sortBy?: 'dueDate' | 'priority';
 
   @IsIn(['asc', 'desc'])
   @IsOptional()

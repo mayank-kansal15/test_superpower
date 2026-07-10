@@ -65,6 +65,18 @@ export class TodosService {
       });
     }
 
+    if (query.sortBy === 'priority') {
+      const rank: Record<'low' | 'medium' | 'high', number> = {
+        low: 1,
+        medium: 2,
+        high: 3,
+      };
+      const direction = query.order === 'asc' ? -1 : 1;
+      result = [...result].sort(
+        (a, b) => direction * (rank[a.priority] - rank[b.priority]),
+      );
+    }
+
     return result;
   }
 

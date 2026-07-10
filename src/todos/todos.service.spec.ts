@@ -225,5 +225,41 @@ describe('TodosService', () => {
       const result = service.findAll({ priority: 'high,medium' });
       expect(result.map((t) => t.title)).toEqual(['Urgent', 'Normal']);
     });
+
+    it('should sort by priority ascending (high to low)', () => {
+      service.create({ title: 'Low one', priority: 'low' });
+      service.create({ title: 'High one', priority: 'high' });
+      service.create({ title: 'Medium one', priority: 'medium' });
+      const result = service.findAll({ sortBy: 'priority', order: 'asc' });
+      expect(result.map((t) => t.title)).toEqual([
+        'High one',
+        'Medium one',
+        'Low one',
+      ]);
+    });
+
+    it('should sort by priority descending (low to high)', () => {
+      service.create({ title: 'Low one', priority: 'low' });
+      service.create({ title: 'High one', priority: 'high' });
+      service.create({ title: 'Medium one', priority: 'medium' });
+      const result = service.findAll({ sortBy: 'priority', order: 'desc' });
+      expect(result.map((t) => t.title)).toEqual([
+        'Low one',
+        'Medium one',
+        'High one',
+      ]);
+    });
+
+    it('should combine a priority filter with a priority sort', () => {
+      service.create({ title: 'Low one', priority: 'low' });
+      service.create({ title: 'High one', priority: 'high' });
+      service.create({ title: 'Medium one', priority: 'medium' });
+      const result = service.findAll({
+        priority: 'high,medium',
+        sortBy: 'priority',
+        order: 'asc',
+      });
+      expect(result.map((t) => t.title)).toEqual(['High one', 'Medium one']);
+    });
   });
 });
