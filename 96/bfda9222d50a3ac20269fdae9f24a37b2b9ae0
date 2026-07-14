@@ -1,0 +1,19 @@
+docs/superpowers/specs/2026-07-15-todo-dependencies-design.md
+  s_3dc68db725ad13::t_17c2ab32e4295d 1-135
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "96bfda9222d50a3ac20269fdae9f24a37b2b9ae0",
+  "prompts": {},
+  "sessions": {
+    "s_3dc68db725ad13": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6e194db6-d50e-4592-9533-54ca8229e751",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "mayank kansal <mayank.kansal@talentica.com>"
+    }
+  }
+}
