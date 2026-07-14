@@ -22,6 +22,7 @@ export class TodosService {
         ? new Date(createTodoDto.dueDate)
         : undefined,
       priority: createTodoDto.priority ?? 'medium',
+      dependsOn: this.resolveDependsOn(createTodoDto.dependsOn),
     };
     this.todos.push(todo);
     return this.toResponse(todo);
@@ -100,6 +101,17 @@ export class TodosService {
       throw new NotFoundException(`Todo with id ${id} not found`);
     }
     this.todos.splice(index, 1);
+  }
+
+  private resolveDependsOn(ids: string[] | undefined): string[] {
+    if (!ids || ids.length === 0) {
+      return [];
+    }
+    const unique = [...new Set(ids)];
+    for (const depId of unique) {
+      this.findTodoOrThrow(depId);
+    }
+    return unique;
   }
 
   private findTodoOrThrow(id: string): Todo {

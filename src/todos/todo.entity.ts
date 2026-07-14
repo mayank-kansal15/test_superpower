@@ -6,4 +6,5 @@ export class Todo {
   createdAt: Date;
   dueDate?: Date;
   priority: 'low' | 'medium' | 'high';
+  dependsOn: string[];
 }

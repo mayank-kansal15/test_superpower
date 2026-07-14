@@ -99,6 +99,35 @@ describe('TodosService', () => {
     expect(updated.dueDate).toEqual(new Date('2026-09-01T00:00:00.000Z'));
   });
 
+  it('should default dependsOn to an empty array', () => {
+    const todo = service.create({ title: 'No deps' });
+    expect(todo.dependsOn).toEqual([]);
+  });
+
+  it('should create a todo with a valid dependsOn list', () => {
+    const dep = service.create({ title: 'Dependency' });
+    const todo = service.create({
+      title: 'Depends on one',
+      dependsOn: [dep.id],
+    });
+    expect(todo.dependsOn).toEqual([dep.id]);
+  });
+
+  it('should dedupe repeated ids in dependsOn', () => {
+    const dep = service.create({ title: 'Dependency' });
+    const todo = service.create({
+      title: 'Depends on one, twice',
+      dependsOn: [dep.id, dep.id],
+    });
+    expect(todo.dependsOn).toEqual([dep.id]);
+  });
+
+  it('should throw when creating with an unknown dependsOn id', () => {
+    expect(() =>
+      service.create({ title: 'Bad dep', dependsOn: ['missing-id'] }),
+    ).toThrow(NotFoundException);
+  });
+
   it('should mark a todo overdue when dueDate is in the past and not completed', () => {
     const todo = service.create({
       title: 'Overdue task',

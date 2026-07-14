@@ -1,10 +1,12 @@
 import {
+  IsArray,
   IsBoolean,
   IsDateString,
   IsIn,
   IsNotEmpty,
   IsOptional,
   IsString,
+  IsUUID,
 } from 'class-validator';
 
 export class CreateTodoDto {
@@ -27,4 +29,9 @@ export class CreateTodoDto {
   @IsIn(['low', 'medium', 'high'])
   @IsOptional()
   priority?: 'low' | 'medium' | 'high';
+
+  @IsArray()
+  @IsUUID('4', { each: true })
+  @IsOptional()
+  dependsOn?: string[];
 }
