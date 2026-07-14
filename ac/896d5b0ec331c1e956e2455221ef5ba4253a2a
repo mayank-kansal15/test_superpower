@@ -1,0 +1,21 @@
+src/todos/timezone.util.spec.ts
+  s_ab9a04b31ca95e::t_af8f1b066a2ed8 1-45
+src/todos/timezone.util.ts
+  s_ab9a04b31ca95e::t_533743598f1ae5 1-36
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "ac896d5b0ec331c1e956e2455221ef5ba4253a2a",
+  "prompts": {},
+  "sessions": {
+    "s_ab9a04b31ca95e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c051801a-5a90-4770-8bc2-f1ee4941f43d",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "mayank kansal <mayank.kansal@talentica.com>"
+    }
+  }
+}
