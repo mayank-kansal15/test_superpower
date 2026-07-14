@@ -112,4 +112,35 @@ describe('TodosController (e2e)', () => {
       .send({ title: 'Bad priority', priority: 'urgent' })
       .expect(400);
   });
+
+  it('blocks completing a todo until its dependency is completed', async () => {
+    const depResponse = await request(app.getHttpServer())
+      .post('/todos')
+      .send({ title: 'Dependency' })
+      .expect(201);
+    const depId = depResponse.body.id;
+
+    const todoResponse = await request(app.getHttpServer())
+      .post('/todos')
+      .send({ title: 'Depends on it', dependsOn: [depId] })
+      .expect(201);
+    const todoId = todoResponse.body.id;
+
+    await request(app.getHttpServer())
+      .patch(`/todos/${todoId}`)
+      .send({ completed: true })
+      .expect(409);
+
+    await request(app.getHttpServer())
+      .patch(`/todos/${depId}`)
+      .send({ completed: true })
+      .expect(200);
+
+    const completed = await request(app.getHttpServer())
+      .patch(`/todos/${todoId}`)
+      .send({ completed: true })
+      .expect(200);
+
+    expect(completed.body.completed).toBe(true);
+  });
 });
