@@ -113,6 +113,26 @@ describe('TodosController (e2e)', () => {
       .expect(400);
   });
 
+  it('rejects an invalid timezone', () => {
+    return request(app.getHttpServer())
+      .post('/todos')
+      .send({ title: 'Bad zone', timezone: 'Not/AZone' })
+      .expect(400);
+  });
+
+  it('resolves a bare dueDate to end-of-day in the given timezone', async () => {
+    const response = await request(app.getHttpServer())
+      .post('/todos')
+      .send({
+        title: 'Zoned',
+        dueDate: '2026-07-20',
+        timezone: 'America/New_York',
+      })
+      .expect(201);
+
+    expect(response.body.dueDate).toBe('2026-07-21T03:59:59.999Z');
+  });
+
   it('blocks completing a todo until its dependency is completed', async () => {
     const depResponse = await request(app.getHttpServer())
       .post('/todos')
