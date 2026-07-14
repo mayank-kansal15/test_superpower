@@ -1,0 +1,24 @@
+src/todos/todos.service.ts
+  s_3dc68db725ad13::t_e369c8c11a72cb 112-114,116-122
+  s_3dc68db725ad13::t_6c71559a98143d 115
+  s_3dc68db725ad13::t_cef4ea98cec584 3
+src/todos/todos.service.spec.ts
+  s_3dc68db725ad13::t_1403323eb8fb85 1-5
+  s_3dc68db725ad13::t_3d004b84c7fc22 173-205
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "b2e0fca5fe9f619e771334e6c2e1a511ced9e7d2",
+  "prompts": {},
+  "sessions": {
+    "s_3dc68db725ad13": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6e194db6-d50e-4592-9533-54ca8229e751",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "mayank kansal <mayank.kansal@talentica.com>"
+    }
+  }
+}
