@@ -5,6 +5,7 @@ export class Todo {
   completed: boolean;
   createdAt: Date;
   dueDate?: Date;
+  timezone?: string;
   priority: 'low' | 'medium' | 'high';
   dependsOn: string[];
 }

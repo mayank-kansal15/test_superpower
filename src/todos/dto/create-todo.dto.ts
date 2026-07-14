@@ -8,6 +8,7 @@ import {
   IsString,
   IsUUID,
 } from 'class-validator';
+import { IsIanaTimeZone } from '../validators/is-iana-timezone';
 
 export class CreateTodoDto {
   @IsString()
@@ -29,6 +30,10 @@ export class CreateTodoDto {
   @IsIn(['low', 'medium', 'high'])
   @IsOptional()
   priority?: 'low' | 'medium' | 'high';
+
+  @IsIanaTimeZone()
+  @IsOptional()
+  timezone?: string;
 
   @IsArray()
   @IsUUID('4', { each: true })

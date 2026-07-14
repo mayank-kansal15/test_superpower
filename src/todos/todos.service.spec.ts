@@ -79,6 +79,45 @@ describe('TodosService', () => {
     expect(todo.dueDate).toBeUndefined();
   });
 
+  it('should leave timezone undefined when not provided on create', () => {
+    const todo = service.create({ title: 'No timezone' });
+    expect(todo.timezone).toBeUndefined();
+  });
+
+  it('should store the given timezone on create', () => {
+    const todo = service.create({
+      title: 'Zoned',
+      timezone: 'America/New_York',
+    });
+    expect(todo.timezone).toBe('America/New_York');
+  });
+
+  it('should resolve a bare dueDate to end-of-day in the given timezone on create', () => {
+    const todo = service.create({
+      title: 'Zoned due date',
+      dueDate: '2026-07-20',
+      timezone: 'America/New_York',
+    });
+    expect(todo.dueDate).toEqual(new Date('2026-07-21T03:59:59.999Z'));
+  });
+
+  it('should leave a bare dueDate at midnight UTC on create when no timezone is given', () => {
+    const todo = service.create({
+      title: 'No timezone due date',
+      dueDate: '2026-07-20',
+    });
+    expect(todo.dueDate).toEqual(new Date('2026-07-20T00:00:00.000Z'));
+  });
+
+  it('should ignore timezone on create when dueDate is a full ISO datetime string', () => {
+    const todo = service.create({
+      title: 'Full ISO due date',
+      dueDate: '2026-07-20T15:00:00.000Z',
+      timezone: 'America/New_York',
+    });
+    expect(todo.dueDate).toEqual(new Date('2026-07-20T15:00:00.000Z'));
+  });
+
   it('should default priority to medium when not specified', () => {
     const todo = service.create({ title: 'No priority given' });
     expect(todo.priority).toBe('medium');

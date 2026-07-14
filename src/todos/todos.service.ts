@@ -9,6 +9,7 @@ import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 import { FindTodosQueryDto } from './dto/find-todos-query.dto';
 import { Todo } from './todo.entity';
+import { endOfDayInZone, isDateOnly } from './timezone.util';
 
 export type TodoResponse = Todo & { isOverdue: boolean };
 
@@ -23,9 +24,11 @@ export class TodosService {
       description: createTodoDto.description,
       completed: createTodoDto.completed ?? false,
       createdAt: new Date(),
-      dueDate: createTodoDto.dueDate
-        ? new Date(createTodoDto.dueDate)
-        : undefined,
+      dueDate: this.resolveDueDate(
+        createTodoDto.dueDate,
+        createTodoDto.timezone,
+      ),
+      timezone: createTodoDto.timezone,
       priority: createTodoDto.priority ?? 'medium',
       dependsOn: this.resolveDependsOn(createTodoDto.dependsOn),
     };
@@ -137,6 +140,19 @@ export class TodosService {
       );
     }
     this.todos.splice(index, 1);
+  }
+
+  private resolveDueDate(
+    dueDate: string | undefined,
+    timezone: string | undefined,
+  ): Date | undefined {
+    if (dueDate === undefined) {
+      return undefined;
+    }
+    if (timezone !== undefined && isDateOnly(dueDate)) {
+      return endOfDayInZone(dueDate, timezone);
+    }
+    return new Date(dueDate);
   }
 
   private resolveDependsOn(ids: string[] | undefined): string[] {
