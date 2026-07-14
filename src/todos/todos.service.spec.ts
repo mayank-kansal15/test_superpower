@@ -142,6 +142,47 @@ describe('TodosService', () => {
     expect(updated.dueDate).toEqual(new Date('2026-09-01T00:00:00.000Z'));
   });
 
+  it('should update a todo timezone only, leaving an existing full-ISO dueDate unchanged', () => {
+    const created = service.create({
+      title: 'Has a due date already',
+      dueDate: '2026-09-01T00:00:00.000Z',
+    });
+    const updated = service.update(created.id, {
+      timezone: 'America/New_York',
+    });
+    expect(updated.timezone).toBe('America/New_York');
+    expect(updated.dueDate).toEqual(new Date('2026-09-01T00:00:00.000Z'));
+  });
+
+  it('should resolve a bare dueDate update using the previously stored timezone', () => {
+    const created = service.create({
+      title: 'Zoned already',
+      timezone: 'America/New_York',
+    });
+    const updated = service.update(created.id, { dueDate: '2026-07-20' });
+    expect(updated.dueDate).toEqual(new Date('2026-07-21T03:59:59.999Z'));
+  });
+
+  it('should apply a new timezone before resolving a bare dueDate in the same update call', () => {
+    const created = service.create({ title: 'Starts as UTC', timezone: 'UTC' });
+    const updated = service.update(created.id, {
+      timezone: 'America/New_York',
+      dueDate: '2026-07-20',
+    });
+    expect(updated.dueDate).toEqual(new Date('2026-07-21T03:59:59.999Z'));
+  });
+
+  it('should ignore the stored timezone when the update dueDate is a full ISO datetime string', () => {
+    const created = service.create({
+      title: 'Zoned but explicit update',
+      timezone: 'America/New_York',
+    });
+    const updated = service.update(created.id, {
+      dueDate: '2026-08-01T12:00:00.000Z',
+    });
+    expect(updated.dueDate).toEqual(new Date('2026-08-01T12:00:00.000Z'));
+  });
+
   it('should default dependsOn to an empty array', () => {
     const todo = service.create({ title: 'No deps' });
     expect(todo.dependsOn).toEqual([]);

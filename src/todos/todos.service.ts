@@ -95,10 +95,13 @@ export class TodosService {
 
   update(id: string, updateTodoDto: UpdateTodoDto): TodoResponse {
     const todo = this.findTodoOrThrow(id);
-    const { dueDate, dependsOn, ...rest } = updateTodoDto;
+    const { dueDate, dependsOn, timezone, ...rest } = updateTodoDto;
     Object.assign(todo, rest);
+    if (timezone !== undefined) {
+      todo.timezone = timezone;
+    }
     if (dueDate !== undefined) {
-      todo.dueDate = new Date(dueDate);
+      todo.dueDate = this.resolveDueDate(dueDate, todo.timezone);
     }
     if (dependsOn !== undefined) {
       const resolved = this.resolveDependsOn(dependsOn);
