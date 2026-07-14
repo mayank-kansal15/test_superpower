@@ -1,0 +1,19 @@
+docs/superpowers/specs/2026-07-15-todo-timezone-design.md
+  s_ab9a04b31ca95e::t_cdd165a6535621 1-66
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "e504abecf0995db4fcfe3e8609618ec228a3b9ca",
+  "prompts": {},
+  "sessions": {
+    "s_ab9a04b31ca95e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c051801a-5a90-4770-8bc2-f1ee4941f43d",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "mayank kansal <mayank.kansal@talentica.com>"
+    }
+  }
+}
