@@ -1,4 +1,4 @@
-import { NotFoundException } from '@nestjs/common';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { TodosService } from './todos.service';
 
@@ -126,6 +126,44 @@ describe('TodosService', () => {
     expect(() =>
       service.create({ title: 'Bad dep', dependsOn: ['missing-id'] }),
     ).toThrow(NotFoundException);
+  });
+
+  it('should update a todo to add a valid dependency', () => {
+    const dep = service.create({ title: 'Dependency' });
+    const created = service.create({ title: 'Depends on nothing yet' });
+    const updated = service.update(created.id, { dependsOn: [dep.id] });
+    expect(updated.dependsOn).toEqual([dep.id]);
+  });
+
+  it('should throw when updating with an unknown dependsOn id', () => {
+    const created = service.create({ title: 'Target' });
+    expect(() =>
+      service.update(created.id, { dependsOn: ['missing-id'] }),
+    ).toThrow(NotFoundException);
+  });
+
+  it('should throw when a todo is set to depend on itself', () => {
+    const created = service.create({ title: 'Self referencer' });
+    expect(() =>
+      service.update(created.id, { dependsOn: [created.id] }),
+    ).toThrow(BadRequestException);
+  });
+
+  it('should throw when creating a 2-node dependency cycle', () => {
+    const a = service.create({ title: 'A' });
+    const b = service.create({ title: 'B', dependsOn: [a.id] });
+    expect(() => service.update(a.id, { dependsOn: [b.id] })).toThrow(
+      BadRequestException,
+    );
+  });
+
+  it('should throw when creating a 3-node dependency cycle', () => {
+    const a = service.create({ title: 'A' });
+    const b = service.create({ title: 'B', dependsOn: [a.id] });
+    const c = service.create({ title: 'C', dependsOn: [b.id] });
+    expect(() => service.update(a.id, { dependsOn: [c.id] })).toThrow(
+      BadRequestException,
+    );
   });
 
   it('should mark a todo overdue when dueDate is in the past and not completed', () => {

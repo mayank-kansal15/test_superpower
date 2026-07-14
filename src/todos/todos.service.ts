@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { randomUUID } from 'crypto';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
@@ -87,10 +91,22 @@ export class TodosService {
 
   update(id: string, updateTodoDto: UpdateTodoDto): TodoResponse {
     const todo = this.findTodoOrThrow(id);
-    const { dueDate, ...rest } = updateTodoDto;
+    const { dueDate, dependsOn, ...rest } = updateTodoDto;
     Object.assign(todo, rest);
     if (dueDate !== undefined) {
       todo.dueDate = new Date(dueDate);
+    }
+    if (dependsOn !== undefined) {
+      const resolved = this.resolveDependsOn(dependsOn);
+      if (resolved.includes(id)) {
+        throw new BadRequestException(`Todo ${id} cannot depend on itself`);
+      }
+      if (this.wouldCreateCycle(id, resolved)) {
+        throw new BadRequestException(
+          `Setting dependsOn on todo ${id} would create a dependency cycle`,
+        );
+      }
+      todo.dependsOn = resolved;
     }
     return this.toResponse(todo);
   }
@@ -112,6 +128,26 @@ export class TodosService {
       this.findTodoOrThrow(depId);
     }
     return unique;
+  }
+
+  private wouldCreateCycle(todoId: string, newDependsOn: string[]): boolean {
+    const visited = new Set<string>();
+    const stack = [...newDependsOn];
+    while (stack.length > 0) {
+      const current = stack.pop() as string;
+      if (current === todoId) {
+        return true;
+      }
+      if (visited.has(current)) {
+        continue;
+      }
+      visited.add(current);
+      const currentTodo = this.todos.find((t) => t.id === current);
+      if (currentTodo) {
+        stack.push(...currentTodo.dependsOn);
+      }
+    }
+    return false;
   }
 
   private findTodoOrThrow(id: string): Todo {
