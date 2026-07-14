@@ -128,6 +128,14 @@ export class TodosService {
     if (index === -1) {
       throw new NotFoundException(`Todo with id ${id} not found`);
     }
+    const dependents = this.todos.filter((t) => t.dependsOn.includes(id));
+    if (dependents.length > 0) {
+      throw new ConflictException(
+        `Cannot delete todo ${id}: still depended on by ${dependents
+          .map((t) => t.id)
+          .join(', ')}`,
+      );
+    }
     this.todos.splice(index, 1);
   }
 

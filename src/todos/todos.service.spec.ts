@@ -203,6 +203,18 @@ describe('TodosService', () => {
     expect(updated.completed).toBe(false);
   });
 
+  it('should throw when deleting a todo that another todo depends on', () => {
+    const dep = service.create({ title: 'Dependency' });
+    service.create({ title: 'Depends on it', dependsOn: [dep.id] });
+    expect(() => service.remove(dep.id)).toThrow(ConflictException);
+  });
+
+  it('should allow deleting a todo with no dependents', () => {
+    const todo = service.create({ title: 'No dependents' });
+    service.remove(todo.id);
+    expect(service.findAll()).toHaveLength(0);
+  });
+
   it('should mark a todo overdue when dueDate is in the past and not completed', () => {
     const todo = service.create({
       title: 'Overdue task',
