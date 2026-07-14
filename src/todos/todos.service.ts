@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ConflictException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -107,6 +108,17 @@ export class TodosService {
         );
       }
       todo.dependsOn = resolved;
+    }
+    if (todo.completed) {
+      const incomplete = todo.dependsOn.filter((depId) => {
+        const dep = this.todos.find((t) => t.id === depId);
+        return !dep?.completed;
+      });
+      if (incomplete.length > 0) {
+        throw new ConflictException(
+          `Cannot complete todo ${id}: incomplete dependencies ${incomplete.join(', ')}`,
+        );
+      }
     }
     return this.toResponse(todo);
   }

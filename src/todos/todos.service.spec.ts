@@ -1,4 +1,8 @@
-import { BadRequestException, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  NotFoundException,
+} from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { TodosService } from './todos.service';
 
@@ -164,6 +168,39 @@ describe('TodosService', () => {
     expect(() => service.update(a.id, { dependsOn: [c.id] })).toThrow(
       BadRequestException,
     );
+  });
+
+  it('should throw when completing a todo with incomplete dependencies', () => {
+    const dep = service.create({ title: 'Dependency' });
+    const todo = service.create({
+      title: 'Depends on incomplete',
+      dependsOn: [dep.id],
+    });
+    expect(() => service.update(todo.id, { completed: true })).toThrow(
+      ConflictException,
+    );
+  });
+
+  it('should allow completing a todo once all dependencies are completed', () => {
+    const dep = service.create({ title: 'Dependency' });
+    const todo = service.create({
+      title: 'Depends on soon-to-be-complete',
+      dependsOn: [dep.id],
+    });
+    service.update(dep.id, { completed: true });
+    const updated = service.update(todo.id, { completed: true });
+    expect(updated.completed).toBe(true);
+  });
+
+  it('should allow un-completing a todo regardless of dependencies', () => {
+    const dep = service.create({ title: 'Dependency' });
+    const todo = service.create({
+      title: 'Depends on incomplete',
+      dependsOn: [dep.id],
+      completed: true,
+    });
+    const updated = service.update(todo.id, { completed: false });
+    expect(updated.completed).toBe(false);
   });
 
   it('should mark a todo overdue when dueDate is in the past and not completed', () => {
